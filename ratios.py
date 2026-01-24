@@ -19,20 +19,34 @@ def calculate_ratios(info, financials, balance_sheet):
     ratios["P/B Ratio"] = info.get("priceToBook", np.nan)
 
     try:
-        net_income = financials.loc["Net Income"].iloc[0]
-        revenue = financials.loc["Total Revenue"].iloc[0]
-        ratios["Net Profit Margin (%)"] = (net_income / revenue) * 100
-    except:
-        ratios["Net Profit Margin (%)"] = np.nan
+        net_income = financials.loc["Net Income"]
+        revenue = financials.loc["Total Revenue"]
+        total_assets = balance_sheet.loc["Total Assets"]
+        total_liabilities = balance_sheet.loc["Total Liab"]
 
-    try:
-        total_assets = balance_sheet.loc["Total Assets"].iloc[0]
-        total_liabilities = balance_sheet.loc["Total Liab"].iloc[0]
-        ratios["Debt to Equity"] = total_liabilities / total_assets
-    except:
-        ratios["Debt to Equity"] = np.nan
+#ratios for 2025
+        ratios["Net Profit Margin (%)"] = (net_income.iloc[0] / revenue.iloc[0]) * 100
+        ratios["Return on Assets (%)"] = (net_income.iloc[0] / total_assets.iloc[0]) * 100
+        ratios["Return on Equity (%)"] = (net_income.iloc[0] / (total_assets.iloc[0] - total_liabilities.iloc[0])) * 100
+        ratios["Current Ratio"] = balance_sheet.loc["Total Current Assets"].iloc[0] / balance_sheet.loc["Total Current Liabilities"].iloc[0]
+        ratios["Debt to Equity"] = total_liabilities.iloc[0] / (total_assets.iloc[0] - total_liabilities.iloc[0])
+ #ratios for 2024
+        ratios["Net Profit Margin 2024 (%)"] = (net_income.iloc[1] / revenue.iloc[1]) * 100
+        ratios["Return on Assets 2024 (%)"] = (net_income.iloc[1] / total_assets.iloc[1]) * 100
+        ratios["Return on Equity 2024 (%)"] = (net_income.iloc[1] / (total_assets.iloc[1] - total_liabilities.iloc[1])) * 100
+        ratios["Current Ratio 2024"] = balance_sheet.loc["Total Current Assets"].iloc[1] / balance_sheet.loc["Total Current Liabilities"].iloc[1]
+        ratios["Debt to Equity 2024"] = total_liabilities.iloc[1] / (total_assets.iloc[1] - total_liabilities.iloc[1])
+#YOY comparision for the ratios
+        ratios["Net Profit Margin (%) YoY Change"] = ratios["Net Profit Margin (%)"] - ratios["Net Profit Margin 2024 (%)"]
+        ratios["Return on Assets (%) YoY Change"] = ratios["Return on Assets (%)"] - ratios["Return on Assets 2024 (%)"]
+        ratios["Return on Equity (%) YoY Change"] = ratios["Return on Equity (%)"] - ratios["Return on Equity 2024 (%)"]
+        ratios["Current Ratio YoY Change"] = ratios["Current Ratio"] - ratios["Current Ratio 2024"]
+        ratios["Debt to Equity YoY Change"] = ratios["Debt to Equity"] - ratios["Debt to Equity 2024"]
+    except Exception:
+        pass
 
     return pd.DataFrame(
         list(ratios.items()),
         columns=["Metric", "Value"]
     )
+

@@ -1,33 +1,41 @@
 import streamlit as st
 from ratios import fetch_data, calculate_ratios
 
+# -------------------------------
+# Page configuration
+# -------------------------------
 st.set_page_config(
     page_title="Financial Ratio Analyzer",
-    layout="wide"
+    layout="centered"
 )
 
-st.title("📊 Company Financial Health Analyzer")
+st.title("📊 Financial Ratio Analyzer (2025 vs 2024)")
 
+# -------------------------------
+# User input
+# -------------------------------
 ticker = st.text_input(
-    "Enter company ticker (e.g. AAPL, MSFT, TSLA):"
+    "Enter stock ticker (e.g. AAPL, MSFT):",
+    placeholder="AAPL"
 )
 
-if st.button("Analyze"):
-    if ticker:
-        try:
-            with st.spinner("Fetching financial data..."):
-                info, financials, balance_sheet = fetch_data(ticker.upper())
-                ratios_df = calculate_ratios(info, financials, balance_sheet)
+# -------------------------------
+# Cached data fetch + calculation
+# -------------------------------
+@st.cache_data(ttl=3600)
+def get_ratios(ticker):
+    info, financials, balance_sheet = fetch_data(ticker)
+    return calculate_ratios(info, financials, balance_sheet)
 
-            st.subheader(f"Financial Ratios for {ticker.upper()}")
-            st.dataframe(ratios_df, use_container_width=True)
+# -------------------------------
+# App logic
+# -------------------------------
+if ticker:
+    with st.spinner("Fetching financial data..."):
+        df = get_ratios(ticker.upper())
 
-            st.subheader("Company Overview")
-            st.write(f"**Industry:** {info.get('industry', 'N/A')}")
-            st.write(f"**Market Cap:** {info.get('marketCap', 'N/A')}")
-            st.write(f"**Beta:** {info.get('beta', 'N/A')}")
-
-        except Exception as e:
-            st.error(f"Error fetching data: {e}")
+    if not df.empty:
+        st.subheader("📈 Financial Ratios")
+        st.dataframe(df, use_container_width=True)
     else:
-        st.warning("Please enter a ticker symbol.")
+        st.error("No financial data available for this ticker.")
