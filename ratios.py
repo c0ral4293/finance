@@ -44,8 +44,8 @@ def calculate_ratios(info, financials, balance_sheet):
         ratios["Return on Equity (%) YoY Change"] = ratios["Return on Equity (%)"] - ratios["Return on Equity 2024 (%)"]
         ratios["Current Ratio YoY Change"] = ratios["Current Ratio"] - ratios["Current Ratio 2024"]
         ratios["Debt to Equity YoY Change"] = ratios["Debt to Equity"] - ratios["Debt to Equity 2024"]
-    except Exception:
-        pass
+    except Exception as e:
+     print(e)
 
     return pd.DataFrame(
         list(ratios.items()),
