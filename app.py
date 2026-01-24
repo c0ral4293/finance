@@ -9,13 +9,13 @@ st.set_page_config(
     layout="centered"
 )
 
-st.title("📊 Financial Ratio Analyzer (2025 vs 2024)")
+st.title("📊 Financial Ratio Analyzer ")
 
 # -------------------------------
 # User input
 # -------------------------------
 ticker = st.text_input(
-    "Enter stock ticker (e.g. AAPL, MSFT):",
+    "Enter stock ticker (e.g. AAPL, MSFT, TSLA):",
     placeholder="AAPL"
 )
 
@@ -39,3 +39,4 @@ if ticker:
         st.dataframe(df, use_container_width=True)
     else:
         st.error("No financial data available for this ticker.")
+        
