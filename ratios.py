@@ -22,7 +22,7 @@ def calculate_ratios(info, financials, balance_sheet):
         net_income = financials.loc["Net Income"]
         revenue = financials.loc["Total Revenue"]
         total_assets = balance_sheet.loc["Total Assets"]
-        total_liabilities = balance_sheet.loc["Total Liabilities"]
+        total_liabilities = balance_sheet.loc["Total Liab"]
         current_assets = balance_sheet.loc["Current Assets"]
         current_liabilities = balance_sheet.loc["Current Liabilities"]
 
