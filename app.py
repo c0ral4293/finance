@@ -15,7 +15,7 @@ st.title("📊 Financial Ratio Analyzer ")
 # User input
 # -------------------------------
 ticker = st.text_input(
-    "Enter stock ticker (e.g. AAPL, MSFT, TSLA):",
+    "Enter stock ticker (e.g. AAPL, MSFT, TSLA (use .NS for indian companies)):",
     placeholder="AAPL"
 )
 
