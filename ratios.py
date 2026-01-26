@@ -63,7 +63,7 @@ def calculate_ratios(info, financials, balance_sheet):
             ("Net Profit Margin YoY Change", npm_25 - npm_24),
         ]
 
-        # ---- ROA ----
+        # --- ROA ---
         roa_25 = (net_income.iloc[0] / total_assets.iloc[0]) * 100
         roa_24 = (net_income.iloc[1] / total_assets.iloc[1]) * 100
 
