@@ -8,7 +8,7 @@ st.title("📊 Financial Ratios Analyzer")
 ticker_symbol = st.text_input(
     "Enter Stock Ticker Symbol",
     value="AAPL",
-    placeholder="Here are some popular tickers: e.g., AAPL, MSFT, GOOGL, TSLA, AMZN etc."
+    placeholder="e.g., AAPL, MSFT, GOOGL"
 ).upper()
 
 if st.button("Analyze", type="primary"):
@@ -22,12 +22,27 @@ if st.button("Analyze", type="primary"):
         st.subheader("Financial Ratios")
         st.dataframe(df, use_container_width=True)
         
+        # Add metrics with arrows
+        st.subheader("Key Insights")
+        
+        cols = st.columns(3)  # Create 3 columns for better layout
+        
+        for idx, (_, row) in enumerate(df.iterrows()):
+            ratio_name = row["Ratio"]
+            change = row["YoY Change"]
+            
+            with cols[idx % 3]:  # Distribute metrics across 3 columns
+                st.metric(
+                    label=ratio_name,
+                    value=f"{row['2025']:.4f}",
+                    delta=f"{change:.4f}"
+                )
+        
         # Add visualization
         st.subheader("📈 Year-over-Year Comparison")
         
         fig, ax = plt.subplots(figsize=(10, 6))
         
-        # Create bar chart comparing 2024 vs 2025
         x = range(len(df))
         width = 0.35
         
