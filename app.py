@@ -8,7 +8,7 @@ st.title("📊 Financial Ratios Analyzer (use .ns for indian companies)")
 ticker_symbol = st.text_input(
     "Enter Stock Ticker Symbol",
     value="AAPL",
-    placeholder="Following are some popular tickers you can try: e.g. AAPL, MSFT, GOOGL, etc."
+    placeholder="e.g., AAPL, MSFT, GOOGL, etc."
 ).upper()
 
 if st.button("Analyze", type="primary"):
@@ -55,6 +55,4 @@ if st.button("Analyze", type="primary"):
     except Exception as e:
         st.error(f"❌ Error: {str(e)}")
         st.info("Please check if the ticker symbol is valid and try again.")
-
-
-st.title("Here is your analyzed data!")
+        
