@@ -1,14 +1,14 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
 from ratios import calculate_ratios
 
-st.title("📊 Financial Ratios Analyzer (use .ns for indian companies)")
+st.title("📊 Financial Ratios Analyzer")
 
-# Input section
 ticker_symbol = st.text_input(
     "Enter Stock Ticker Symbol",
     value="AAPL",
-    placeholder="Try some popular tickers: e.g., AAPL, MSFT, GOOGL, etc."
+    placeholder="Here are some popular tickers: e.g., AAPL, MSFT, GOOGL, TSLA, AMZN etc."
 ).upper()
 
 if st.button("Analyze", type="primary"):
@@ -18,41 +18,33 @@ if st.button("Analyze", type="primary"):
         
         st.success(f"✅ Analysis complete for {ticker_symbol}")
         
-        # Display the ratios table
+        # Display the table
         st.subheader("Financial Ratios")
+        st.dataframe(df, use_container_width=True)
         
-        # Format the dataframe for better display
-        styled_df = df.style.format({
-            "2025": "{:.4f}",
-            "2024": "{:.4f}",
-            "YoY Change": "{:.4f}"
-        })
+        # Add visualization
+        st.subheader("📈 Year-over-Year Comparison")
         
-        st.dataframe(styled_df, use_container_width=True)
+        fig, ax = plt.subplots(figsize=(10, 6))
         
-        # Optional: Add some insights
-        st.subheader("Key Insights")
+        # Create bar chart comparing 2024 vs 2025
+        x = range(len(df))
+        width = 0.35
         
-        for _, row in df.iterrows():
-            ratio_name = row["Ratio"]
-            change = row["YoY Change"]
-            
-            if change > 0:
-                st.metric(
-                    label=ratio_name,
-                    value=f"{row['2025']:.4f}",
-                    delta=f"{change:.4f}"
-                )
-            elif change < 0:
-                st.metric(
-                    label=ratio_name,
-                    value=f"{row['2025']:.4f}",
-                    delta=f"{change:.4f}"
-                )
+        ax.bar([i - width/2 for i in x], df['2024'], width, label='2024', alpha=0.8)
+        ax.bar([i + width/2 for i in x], df['2025'], width, label='2025', alpha=0.8)
+        
+        ax.set_xlabel('Ratios')
+        ax.set_ylabel('Values')
+        ax.set_title(f'{ticker_symbol} Financial Ratios Comparison')
+        ax.set_xticks(x)
+        ax.set_xticklabels(df['Ratio'], rotation=45, ha='right')
+        ax.legend()
+        
+        plt.tight_layout()
+        st.pyplot(fig)
         
     except ValueError as e:
         st.error(f"❌ {str(e)}")
     except Exception as e:
         st.error(f"❌ Error: {str(e)}")
-        st.info("Please check if the ticker symbol is valid and try again.")
-        
