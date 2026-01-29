@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-from ratios import calculate_all_ratios
+from ratios import calculate_ratios
 
 st.title("Financial Ratio Analyzer")
 
@@ -12,7 +12,7 @@ if ticker:
 
     try:
         st.write("Calling backend...")
-        df = calculate_all_ratios(ticker.upper())
+        df = calculate_ratios(ticker.upper())
         st.success("Data fetched")
         st.dataframe(df)
 
