@@ -1,57 +1,36 @@
 import streamlit as st
-import pandas as pd
-from ratios import calculate_ratios
 
-st.title("📊 Financial Ratios Analyzer")
+st.title("📊 Financial Ratios Analyzer - Debug Mode")
 
-# Input section
-ticker_symbol = st.text_input(
-    "Enter Stock Ticker Symbol",
-    value="AAPL",
-    placeholder="e.g., AAPL, MSFT, GOOGL"
-).upper()
+# Test 1: Check if we can import basic libraries
+try:
+    import pandas as pd
+    import numpy as np
+    import yfinance as yf
+    st.success("✅ All basic libraries imported successfully")
+except Exception as e:
+    st.error(f"❌ Library import failed: {e}")
+    st.stop()
 
-if st.button("Analyze", type="primary"):
+# Test 2: Try to import ratios.py
+try:
+    from ratios import calculate_ratios
+    st.success("✅ ratios.py imported successfully")
+except Exception as e:
+    st.error(f"❌ Failed to import ratios.py: {e}")
+    st.write("Full error:")
+    st.exception(e)
+    st.stop()
+
+# Test 3: Try to run the function
+ticker_symbol = st.text_input("Enter Stock Ticker", value="AAPL").upper()
+
+if st.button("Analyze"):
     try:
-        with st.spinner(f"Fetching data for {ticker_symbol}..."):
+        with st.spinner("Fetching data..."):
             df = calculate_ratios(ticker_symbol)
-        
-        st.success(f"✅ Analysis complete for {ticker_symbol}")
-        
-        # Display the ratios table
-        st.subheader("Financial Ratios")
-        
-        # Format the dataframe for better display
-        styled_df = df.style.format({
-            "2025": "{:.4f}",
-            "2024": "{:.4f}",
-            "YoY Change": "{:.4f}"
-        })
-        
-        st.dataframe(styled_df, use_container_width=True)
-        
-        # Optional: Add some insights
-        st.subheader("Key Insights")
-        
-        for _, row in df.iterrows():
-            ratio_name = row["Ratio"]
-            change = row["YoY Change"]
-            
-            if change > 0:
-                st.metric(
-                    label=ratio_name,
-                    value=f"{row['2025']:.4f}",
-                    delta=f"{change:.4f}"
-                )
-            elif change < 0:
-                st.metric(
-                    label=ratio_name,
-                    value=f"{row['2025']:.4f}",
-                    delta=f"{change:.4f}"
-                )
-        
-    except ValueError as e:
-        st.error(f"❌ {str(e)}")
+        st.success("✅ Function executed successfully")
+        st.dataframe(df)
     except Exception as e:
-        st.error(f"❌ Error: {str(e)}")
-        st.info("Please check if the ticker symbol is valid and try again.")
+        st.error(f"❌ Function failed: {e}")
+        st.exception(e)
