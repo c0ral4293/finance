@@ -7,8 +7,7 @@ st.title("📊 Financial Ratios Analyzer")
 
 ticker_symbol = st.text_input(
     "Enter Stock Ticker Symbol",
-    value="AAPL",
-    placeholder="e.g., AAPL, MSFT, GOOGL"
+     placeholder="Here are some popular tickers: e.g., AAPL, MSFT, GOOGL, AMZN, TSLA, etc."
 ).upper()
 
 if st.button("Analyze", type="primary"):
