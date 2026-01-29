@@ -2,13 +2,13 @@ import streamlit as st
 import pandas as pd
 from ratios import calculate_ratios
 
-st.title("📊 Financial Ratios Analyzer")
+st.title("📊 Financial Ratios Analyzer (use .ns for indian companies)")
 
 # Input section
 ticker_symbol = st.text_input(
     "Enter Stock Ticker Symbol",
     value="AAPL",
-    placeholder="e.g., AAPL, MSFT, GOOGL"
+    placeholder="Following are some popular tickers you can try: e.g. AAPL, MSFT, GOOGL, etc."
 ).upper()
 
 if st.button("Analyze", type="primary"):
@@ -55,3 +55,6 @@ if st.button("Analyze", type="primary"):
     except Exception as e:
         st.error(f"❌ Error: {str(e)}")
         st.info("Please check if the ticker symbol is valid and try again.")
+
+
+st.title("Here is your analyzed data!")
