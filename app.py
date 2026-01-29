@@ -3,7 +3,7 @@ from ratios import calculate_ratios
 
 st.set_page_config(page_title="Financial Ratios", page_icon="📊")
 
-st.title("📊 Financial Ratios Analyzer")
+st.title("📊 Financial Ratios Analyser")
 
 ticker_symbol = st.text_input(
     "Enter Stock Ticker Symbol",
