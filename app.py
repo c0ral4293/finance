@@ -1,5 +1,5 @@
 import streamlit as st
-from ratios import get_ratios
+from ratios import calculate_all_ratios
 
 st.set_page_config(
     page_title="Financial Ratio Analyzer",
@@ -10,7 +10,7 @@ st.set_page_config(
 st.title("📊 Financial Ratio Analyzer")
 
 ticker = st.text_input(
-    "Enter stock ticker (e.g. AAPL, MSFT, TSLA):",
+    "Enter stock ticker (e.g. AAPL, MSFT, TSLA, (use .NS for indian companies)):",
     value=""
 )
 
