@@ -1,21 +1,19 @@
 import streamlit as st
-import time
 from ratios import calculate_ratios
 
-st.title("Financial Ratio Analyzer")
+st.set_page_config(page_title="Financial Ratio Analyzer", layout="wide")
 
-ticker = st.text_input("Enter ticker (AAPL, MSFT, TSLA)")
+st.title("📊 Financial Ratio Analyzer")
+
+ticker = st.text_input("Enter stock ticker (e.g. AAPL, MSFT, TSLA):")
 
 if ticker:
-    st.write("Starting calculation...")
-    time.sleep(0.2)
-
     try:
-        st.write("Calling backend...")
-        df = calculate_ratios(ticker.upper())
-        st.success("Data fetched")
-        st.dataframe(df)
+        with st.spinner("Fetching financial data..."):
+            df = calculate_ratios(ticker.upper())
+
+        st.subheader("📈 Financial Ratios")
+        st.dataframe(df, use_container_width=True)
 
     except Exception as e:
-        st.error("Backend failed")
-        st.exception(e)
+        st.error(f"Error: {e}")
