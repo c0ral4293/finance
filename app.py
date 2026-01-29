@@ -1,5 +1,5 @@
 import streamlit as st
-from ratios import calculate_ratios
+from ratios import get_value
 
 st.set_page_config(page_title="Financial Ratio Analyzer", layout="wide")
 
@@ -10,7 +10,7 @@ ticker = st.text_input("Enter stock ticker (e.g. AAPL, MSFT, TSLA):")
 if ticker:
     try:
         with st.spinner("Fetching financial data..."):
-            df = calculate_ratios(ticker.upper())
+            df = get_value(ticker.upper())
 
         st.subheader("📈 Financial Ratios")
         st.dataframe(df, use_container_width=True)
