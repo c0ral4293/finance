@@ -1,36 +1,57 @@
 import streamlit as st
+import pandas as pd
+import numpy as np
+import sys
+import os
 
-st.title("📊 Financial Ratios Analyzer - Debug Mode")
+# Add current directory to path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-# Test 1: Check if we can import basic libraries
-try:
-    import pandas as pd
-    import numpy as np
-    import yfinance as yf
-    st.success("✅ All basic libraries imported successfully")
-except Exception as e:
-    st.error(f"❌ Library import failed: {e}")
-    st.stop()
+st.set_page_config(page_title="Financial Ratios", page_icon="📊")
 
-# Test 2: Try to import ratios.py
+st.title("📊 Financial Ratios Analyzer")
+
+# Import check
 try:
     from ratios import calculate_ratios
-    st.success("✅ ratios.py imported successfully")
+    st.sidebar.success("✅ Backend loaded")
 except Exception as e:
-    st.error(f"❌ Failed to import ratios.py: {e}")
-    st.write("Full error:")
-    st.exception(e)
+    st.error(f"Failed to load ratios module: {e}")
     st.stop()
 
-# Test 3: Try to run the function
-ticker_symbol = st.text_input("Enter Stock Ticker", value="AAPL").upper()
+# Main app
+ticker_symbol = st.text_input(
+    "Enter Stock Ticker Symbol",
+    value="AAPL",
+    placeholder="e.g., AAPL, MSFT, GOOGL",
+    max_chars=10
+).strip().upper()
 
-if st.button("Analyze"):
-    try:
-        with st.spinner("Fetching data..."):
-            df = calculate_ratios(ticker_symbol)
-        st.success("✅ Function executed successfully")
-        st.dataframe(df)
-    except Exception as e:
-        st.error(f"❌ Function failed: {e}")
-        st.exception(e)
+if st.button("Analyze", type="primary", disabled=not ticker_symbol):
+    if ticker_symbol:
+        try:
+            with st.spinner(f"Fetching financial data for {ticker_symbol}..."):
+                df = calculate_ratios(ticker_symbol)
+            
+            st.success(f"✅ Analysis complete for {ticker_symbol}")
+            
+            # Display results
+            st.subheader("Financial Ratios")
+            st.dataframe(
+                df.style.format({
+                    "2025": "{:.4f}",
+                    "2024": "{:.4f}",
+                    "YoY Change": "{:.4f}"
+                }),
+                use_container_width=True,
+                hide_index=True
+            )
+            
+        except ValueError as e:
+            st.error(f"❌ {str(e)}")
+            st.info("This ticker may not have sufficient financial data available.")
+        except Exception as e:
+            st.error(f"❌ An error occurred: {str(e)}")
+            st.info("Please verify the ticker symbol and try again.")
+    else:
+        st.warning("⚠️ Please enter a ticker symbol")
