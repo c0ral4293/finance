@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from ratios import calculate_ratios
 
-st.title("📊 Financial Ratios Analyzer")
+st.title("📊 Financial Ratios Analyzer (.ns for indian tickers)")
 
 ticker_symbol = st.text_input(
     "Enter Stock Ticker Symbol",
