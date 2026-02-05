@@ -15,7 +15,7 @@ if st.button("Analyze", type="primary"):
         with st.spinner(f"Fetching data for {ticker_symbol}..."):
             df = calculate_ratios(ticker_symbol)
         
-        st.success(f"✅ Analysis complete for {ticker_symbol}")
+        st.success(f"✅ Analysis completed for {ticker_symbol}")
         
         # Display the table
         st.subheader("Financial Ratios")
