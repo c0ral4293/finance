@@ -9,7 +9,7 @@ from plotly.subplots import make_subplots
 # ─── Page Config ──────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="FinLens · Financial Health Analyzer",
-    page_icon="📊",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
