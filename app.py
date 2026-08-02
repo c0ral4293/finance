@@ -629,7 +629,6 @@ elif not ticker_input and analyze:
 else:
     st.markdown("""
     <div style="text-align:center; padding: 4rem 2rem; color: var(--muted);">
-      <div style="font-size:3rem; margin-bottom:1rem">📊</div>
       <div style="font-size:1.1rem; font-weight:500">Enter a ticker symbol above to begin analysis</div>
       <div style="font-size:0.85rem; margin-top:0.5rem">Supports global tickers · US, NSE, LSE and more</div>
     </div>
